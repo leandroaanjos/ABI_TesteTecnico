@@ -61,36 +61,6 @@ public class UsersController : BaseController
     }
 
     /// <summary>
-    /// Retrieves a user by their ID
-    /// </summary>
-    /// <param name="id">The unique identifier of the user</param>
-    /// <param name="cancellationToken">Cancellation token</param>
-    /// <returns>The user details if found</returns>
-    [HttpGet("{id}")]
-    [ProducesResponseType(typeof(ApiResponseWithData<GetUserResponse>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetUser([FromRoute] Guid id, CancellationToken cancellationToken)
-    {
-        var request = new GetUserRequest { Id = id };
-        var validator = new GetUserRequestValidator();
-        var validationResult = await validator.ValidateAsync(request, cancellationToken);
-
-        if (!validationResult.IsValid)
-            return BadRequest(validationResult.Errors);
-
-        var command = _mapper.Map<GetUserCommand>(request.Id);
-        var response = await _mediator.Send(command, cancellationToken);
-
-        return Ok(new ApiResponseWithData<GetUserResponse>
-        {
-            Success = true,
-            Message = "User retrieved successfully",
-            Data = _mapper.Map<GetUserResponse>(response)
-        });
-    }
-
-    /// <summary>
     /// Deletes a user by their ID
     /// </summary>
     /// <param name="id">The unique identifier of the user to delete</param>
