@@ -26,8 +26,7 @@ public class ProductValidator : AbstractValidator<Product>
             .MinimumLength(3).WithMessage($"{nameof(Product.Category)} must be at least 3 characters long.")
             .MaximumLength(50).WithMessage($"{nameof(Product.Category)} cannot be longer than 50 characters.");
 
-        RuleFor(x => x.Image)
-            .MinimumLength(3).WithMessage($"{nameof(Product.Image)} must be at least 3 characters long.")
+        RuleFor(x => x.Image)            
             .MaximumLength(100).WithMessage($"{nameof(Product.Image)} cannot be longer than 100 characters.");
     }
 }

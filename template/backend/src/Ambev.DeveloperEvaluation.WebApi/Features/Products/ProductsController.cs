@@ -3,16 +3,17 @@ using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using Ambev.DeveloperEvaluation.WebApi.Features.Products.CreateProduct;
+using Ambev.DeveloperEvaluation.WebApi.Features.Products.DeleteProduct;
 //using Ambev.DeveloperEvaluation.WebApi.Features.Products.GetProduct;
-//using Ambev.DeveloperEvaluation.WebApi.Features.Products.DeleteProduct;
 using Ambev.DeveloperEvaluation.Application.Products.CreateProduct;
+using Ambev.DeveloperEvaluation.Application.Products.DeleteProduct;
 //using Ambev.DeveloperEvaluation.Application.Products.GetProduct;
-//using Ambev.DeveloperEvaluation.Application.Products.DeleteProduct;
+
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Products;
 
 /// <summary>
-/// Controller for managing user operations
+/// Controller for managing product operations
 /// </summary>
 [ApiController]
 [Route("api/[controller]")]
@@ -33,11 +34,11 @@ public class ProductsController : BaseController
     }
 
     /// <summary>
-    /// Creates a new user
+    /// Creates a new product
     /// </summary>
-    /// <param name="request">The user creation request</param>
+    /// <param name="request">The product creation request</param>
     /// <param name="cancellationToken">Cancellation token</param>
-    /// <returns>The created user details</returns>
+    /// <returns>The created product details</returns>
     [HttpPost]
     [ProducesResponseType(typeof(ApiResponseWithData<CreateProductResponse>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
@@ -58,5 +59,37 @@ public class ProductsController : BaseController
             Message = "Product created successfully",
             Data = _mapper.Map<CreateProductResponse>(response)
         });
-    }    
+    }
+
+    // Get Product
+
+
+    /// <summary>
+    /// Deletes a product by their ID
+    /// </summary>
+    /// <param name="id">The unique identifier of the product to delete</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>Success response if the product was deleted</returns>
+    [HttpDelete("{id}")]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteProduct([FromRoute] Guid id, CancellationToken cancellationToken)
+    {
+        var request = new DeleteProductRequest { Id = id };
+        var validator = new DeleteProductRequestValidator();
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+
+        if (!validationResult.IsValid)
+            return BadRequest(validationResult.Errors);
+
+        var command = _mapper.Map<DeleteProductCommand>(request.Id);
+        await _mediator.Send(command, cancellationToken);
+
+        return Ok(new ApiResponse
+        {
+            Success = true,
+            Message = "Product deleted successfully"
+        });
+    }
 }
