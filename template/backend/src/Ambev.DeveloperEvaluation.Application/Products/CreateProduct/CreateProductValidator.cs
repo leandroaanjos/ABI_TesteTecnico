@@ -23,7 +23,7 @@ public class CreateProductCommandValidator : AbstractValidator<CreateProductComm
     public CreateProductCommandValidator()
     {        
         RuleFor(product => product.Title).NotEmpty().Length(3, 50);
-        RuleFor(product => product.Price).NotEmpty();
+        // RuleFor(product => product.Price).NotEmpty();
         RuleFor(product => product.Description).NotEmpty().Length(3, 100);
         RuleFor(product => product.Category).NotEmpty().Length(3, 50);
         RuleFor(product => product.Image).MaximumLength(100);

@@ -18,7 +18,7 @@ public class CreateProductResponse
     /// <summary>
     /// Price
     /// </summary>
-    public decimal Price { get; set; }
+    // public decimal Price { get; set; }
 
     /// <summary>
     /// Description
