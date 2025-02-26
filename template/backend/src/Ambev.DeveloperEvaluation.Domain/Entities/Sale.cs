@@ -6,45 +6,25 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities;
 
 
 /// <summary>
-/// Represents a SaleItem in the system
+/// Represents a Sale in the system
 /// This entity follows domain-driven design principles and includes business rules validation.
 /// </summary>
-public class SaleItem : BaseEntity
+public class Sale : BaseEntity
 {
     /// <summary>
-    /// SaleId
+    /// SaleNumber    
     /// </summary>
-    public Guid SaleId { get; private set; }
+    public string SaleNumber { get; set; } = string.Empty;
 
     /// <summary>
-    /// Sale
+    /// SaleDate
     /// </summary>
-    public Sale Sale { get; private set; } = new();
+    public DateTime SaleDate { get; set; }
 
     /// <summary>
-    /// ProductId
+    /// Customer
     /// </summary>
-    public Guid ProductId { get; private set; }
-
-    /// <summary>
-    /// Product    
-    /// </summary>
-    public Product Product { get; private set; } = new();
-
-    /// <summary>
-    /// Quantity    
-    /// </summary>
-    public int Quantity { get; private set; }
-
-    /// <summary>
-    /// UnitPrice    
-    /// </summary>
-    public decimal UnitPrice { get; set; }
-
-    /// <summary>
-    /// Discount    
-    /// </summary>
-    public decimal Discount { get; private set; }
+    public string Customer { get; set; } = string.Empty;
 
     /// <summary>
     /// TotalAmount    
@@ -52,10 +32,20 @@ public class SaleItem : BaseEntity
     public decimal TotalAmount { get; private set; }
 
     /// <summary>
+    /// Branch
+    /// </summary>
+    public string Branch { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Items
+    /// </summary>
+    public ICollection<SaleItem> Items { get; set; } = [];
+
+    /// <summary>
     /// IsCancelled    
     /// </summary>
     public bool IsCancelled { get; private set; } = false;
-    
+
     /// <summary>
     /// Gets the date and time when the user was created.
     /// </summary>
@@ -67,44 +57,39 @@ public class SaleItem : BaseEntity
     public DateTime? UpdatedAt { get; set; }
 
     /// <summary>
-    /// Initializes a new instance of the SaleItem class.
+    /// Initializes a new instance of the Sale class.
     /// </summary>
-    public SaleItem()
+    public Sale()
     {
         CreatedAt = DateTime.UtcNow;
     }
 
-    public SaleItem(Product product, int quantity, decimal unitPrice)
+    /// <summary>
+    /// Add a SaleItem
+    /// </summary>
+    /// <param name="product"></param>
+    /// <param name="quantity"></param>
+    /// <exception cref="InvalidOperationException"></exception>
+    public void AddItem(Product product, int quantity, decimal unitPrice)
     {
-        // Id = Guid.NewGuid(); // Id has defaultvalue
-        Product = product;
-        Quantity = quantity;
-        UnitPrice = unitPrice;        
-        CalculateTotalAmount();
+        if (quantity > 20)
+            throw new InvalidOperationException("Cannot sell more than 20 identical items.");
+
+        Items.Add(new SaleItem(product, quantity, unitPrice));
+        UpdateTotalAmount();
     }
 
-    public decimal CalculateTotalAmount()
+    /// <summary>
+    /// Update TotalAmount property
+    /// </summary>
+    private void UpdateTotalAmount()
     {
-        ApplyDiscount();
-        TotalAmount = (UnitPrice * Quantity) - Discount;
-        return TotalAmount;
-    }
-
-    private void ApplyDiscount()
-    {
-        Discount = Quantity switch
-        {
-            >= 4 and < 10 => UnitPrice * Quantity * 0.10m,
-            >= 10 and <= 20 => UnitPrice * Quantity * 0.20m,
-            _ => 0,
-        };
+        TotalAmount = Items.Sum(i => !i.IsCancelled ? i.TotalAmount : 0);
     }
 
     public void Cancel()
     {
-        IsCancelled = true;
-        // TODO notificar Sales class para chamar o metodo Sale.UpdateTotalAmount, pois o item foi cancelado
-        // LogEvent("SaleCancelled", this);
+        IsCancelled = true;        
     }
 
     /// <summary>
@@ -117,13 +102,14 @@ public class SaleItem : BaseEntity
     /// </returns>
     /// <remarks>
     /// <listheader>The validation includes checking:</listheader>
-    /// <list type="bullet">Quantity</list>    
-    /// <list type="bullet">UnitPrice</list>
+    /// <list type="bullet">Title length</list>
+    /// <list type="bullet">Description length</list>
+    /// <list type="bullet">Category length</list>
     /// 
     /// </remarks>
     public ValidationResultDetail Validate()
     {
-        var validator = new SaleItemValidator();
+        var validator = new SaleValidator();
         var result = validator.Validate(this);
         return new ValidationResultDetail
         {
