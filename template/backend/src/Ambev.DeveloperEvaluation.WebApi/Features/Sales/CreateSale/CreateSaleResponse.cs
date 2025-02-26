@@ -1,14 +1,14 @@
-using Ambev.DeveloperEvaluation.Application.SaleItems.GetSaleItem;
+using Ambev.DeveloperEvaluation.WebApi.Features.SaleItems.CreateSaleItem;
 
-namespace Ambev.DeveloperEvaluation.Application.Sales.GetSale;
+namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.CreateSale;
 
 /// <summary>
-/// Response model for GetSale operation
+/// API response model for CreateSale operation
 /// </summary>
-public class GetSaleResult
+public class CreateSaleResponse
 {
     /// <summary>
-    /// The unique identifier of the sale
+    /// The unique identifier of the created sale
     /// </summary>
     public Guid Id { get; set; }
 
@@ -36,7 +36,7 @@ public class GetSaleResult
     /// Branch
     /// </summary>
     public string Branch { get; set; } = string.Empty;
-
+    
     /// <summary>
     /// IsCancelled    
     /// </summary>
@@ -45,5 +45,5 @@ public class GetSaleResult
     /// <summary>
     /// Items
     /// </summary>
-    public List<GetSaleItemResult> Items { get; set; } = [];
+    public ICollection<CreateSaleItemResponse> Items { get; set; } = [];
 }

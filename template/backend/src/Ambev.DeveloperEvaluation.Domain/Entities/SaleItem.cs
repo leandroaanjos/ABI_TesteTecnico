@@ -14,27 +14,17 @@ public class SaleItem : BaseEntity
     /// <summary>
     /// SaleId
     /// </summary>
-    public Guid SaleId { get; private set; }
-
-    /// <summary>
-    /// Sale
-    /// </summary>
-    public Sale Sale { get; private set; } = new();
+    public Guid SaleId { get; set; }
 
     /// <summary>
     /// ProductId
     /// </summary>
-    public Guid ProductId { get; private set; }
-
-    /// <summary>
-    /// Product    
-    /// </summary>
-    public Product Product { get; private set; } = new();
-
+    public Guid ProductId { get; set; }
+    
     /// <summary>
     /// Quantity    
     /// </summary>
-    public int Quantity { get; private set; }
+    public int Quantity { get; set; }
 
     /// <summary>
     /// UnitPrice    
@@ -54,8 +44,18 @@ public class SaleItem : BaseEntity
     /// <summary>
     /// IsCancelled    
     /// </summary>
-    public bool IsCancelled { get; private set; } = false;
-    
+    public bool IsCancelled { get; set; } = false;
+
+    /// <summary>
+    /// Sale
+    /// </summary>
+    public Sale Sale { get; set; } = new();
+
+    /// <summary>
+    /// Product    
+    /// </summary>
+    public Product Product { get; set; } = new();
+
     /// <summary>
     /// Gets the date and time when the user was created.
     /// </summary>
@@ -69,6 +69,7 @@ public class SaleItem : BaseEntity
     /// <summary>
     /// Initializes a new instance of the SaleItem class.
     /// </summary>
+    
     public SaleItem()
     {
         CreatedAt = DateTime.UtcNow;
@@ -76,10 +77,10 @@ public class SaleItem : BaseEntity
 
     public SaleItem(Product product, int quantity, decimal unitPrice)
     {
-        // Id = Guid.NewGuid(); // Id has defaultvalue
+        CreatedAt = DateTime.UtcNow;
         Product = product;
         Quantity = quantity;
-        UnitPrice = unitPrice;        
+        UnitPrice = unitPrice;
         CalculateTotalAmount();
     }
 
@@ -104,7 +105,7 @@ public class SaleItem : BaseEntity
     {
         IsCancelled = true;
         // TODO notificar Sales class para chamar o metodo Sale.UpdateTotalAmount, pois o item foi cancelado
-        // LogEvent("SaleCancelled", this);
+        // LogEvent("SaleItemCancelled", this);
     }
 
     /// <summary>

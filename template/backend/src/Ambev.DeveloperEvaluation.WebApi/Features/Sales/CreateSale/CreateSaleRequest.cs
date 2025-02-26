@@ -1,17 +1,12 @@
-using Ambev.DeveloperEvaluation.Application.SaleItems.GetSaleItem;
+﻿using Ambev.DeveloperEvaluation.WebApi.Features.SaleItems.CreateSaleItem;
 
-namespace Ambev.DeveloperEvaluation.Application.Sales.GetSale;
+namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.CreateSale;
 
 /// <summary>
-/// Response model for GetSale operation
+/// Represents a request to create a new sale in the system.
 /// </summary>
-public class GetSaleResult
+public class CreateSaleRequest
 {
-    /// <summary>
-    /// The unique identifier of the sale
-    /// </summary>
-    public Guid Id { get; set; }
-
     /// <summary>
     /// SaleNumber    
     /// </summary>
@@ -28,15 +23,10 @@ public class GetSaleResult
     public string Customer { get; set; } = string.Empty;
 
     /// <summary>
-    /// TotalAmount    
-    /// </summary>
-    public decimal TotalAmount { get; set; }
-
-    /// <summary>
     /// Branch
     /// </summary>
     public string Branch { get; set; } = string.Empty;
-
+    
     /// <summary>
     /// IsCancelled    
     /// </summary>
@@ -45,5 +35,5 @@ public class GetSaleResult
     /// <summary>
     /// Items
     /// </summary>
-    public List<GetSaleItemResult> Items { get; set; } = [];
+    public ICollection<CreateSaleItemRequest> Items { get; set; } = [];
 }

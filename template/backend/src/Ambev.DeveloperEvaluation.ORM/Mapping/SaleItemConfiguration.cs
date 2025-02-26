@@ -18,6 +18,9 @@ public class SaleItemConfiguration : IEntityTypeConfiguration<SaleItem>
         builder.Property(x => x.Discount).HasColumnType("numeric(18,2)");
         builder.Property(x => x.TotalAmount).HasColumnType("numeric(18,2)");
 
-        builder.HasOne(x => x.Product).WithOne().OnDelete(DeleteBehavior.NoAction);
+        builder.HasOne(si => si.Product)
+            .WithOne()
+            .HasForeignKey<SaleItem>(si => si.ProductId)
+            .OnDelete(DeleteBehavior.Restrict); // For Postgres -> DeleteBehavior.Restrict | For MSQL -> DeleteBehavior.NoAction
     }
 }

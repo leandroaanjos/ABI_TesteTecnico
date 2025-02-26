@@ -13,14 +13,19 @@ public class GetSaleItemResult
     public Guid Id { get; set; }
 
     /// <summary>
-    /// Product    
+    /// SaleId
     /// </summary>
-    public GetProductResult Product { get; private set; } = new();
+    public Guid SaleId { get; set; }
 
+    /// <summary>
+    /// ProductId
+    /// </summary>
+    public Guid ProductId { get; set; }
+    
     /// <summary>
     /// Quantity    
     /// </summary>
-    public int Quantity { get; private set; }
+    public int Quantity { get; set; }
 
     /// <summary>
     /// UnitPrice    
@@ -30,15 +35,20 @@ public class GetSaleItemResult
     /// <summary>
     /// Discount    
     /// </summary>
-    public decimal Discount { get; private set; }
+    public decimal Discount { get; set; }
 
     /// <summary>
     /// TotalAmount    
     /// </summary>
-    public decimal TotalAmount { get; private set; }
+    public decimal TotalAmount { get; set; }
 
     /// <summary>
     /// IsCancelled    
     /// </summary>
-    public bool IsCancelled { get; private set; } = false;
+    public bool IsCancelled { get; set; } = false;
+
+    /// <summary>
+    /// Product    
+    /// </summary>
+    public GetProductResult Product { get; set; } = new();
 }

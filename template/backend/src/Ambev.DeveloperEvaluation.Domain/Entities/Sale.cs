@@ -44,7 +44,7 @@ public class Sale : BaseEntity
     /// <summary>
     /// IsCancelled    
     /// </summary>
-    public bool IsCancelled { get; private set; } = false;
+    public bool IsCancelled { get; set; } = false;
 
     /// <summary>
     /// Gets the date and time when the user was created.
@@ -90,6 +90,7 @@ public class Sale : BaseEntity
     public void Cancel()
     {
         IsCancelled = true;        
+        // LogEvent("SaleCancelled", this);
     }
 
     /// <summary>

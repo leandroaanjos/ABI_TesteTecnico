@@ -38,12 +38,12 @@ public class GetSaleResponse
     public string Branch { get; set; } = string.Empty;
 
     /// <summary>
+    /// IsCancelled    
+    /// </summary>
+    public bool IsCancelled { get; set; } = false;
+
+    /// <summary>
     /// Items
     /// </summary>
     public List<GetSaleItemResponse> Items { get; set; } = [];
-
-    /// <summary>
-    /// IsCancelled    
-    /// </summary>
-    public bool IsCancelled { get; private set; } = false;
 }

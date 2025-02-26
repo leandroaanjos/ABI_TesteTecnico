@@ -18,6 +18,9 @@ public class SaleConfiguration : IEntityTypeConfiguration<Sale>
         builder.Property(x => x.Branch).IsRequired().HasMaxLength(50);
         builder.Property(x => x.TotalAmount).HasColumnType("numeric(18,2)");
 
-        builder.HasMany(s => s.Items).WithOne(si => si.Sale).HasForeignKey(x => x.SaleId).OnDelete(DeleteBehavior.Cascade);
+        builder.HasMany(s => s.Items)
+            .WithOne(si => si.Sale)
+            .HasForeignKey(si => si.SaleId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

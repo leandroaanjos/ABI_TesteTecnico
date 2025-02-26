@@ -15,22 +15,17 @@ public class GetSaleItemResponse
     /// <summary>
     /// SaleId
     /// </summary>
-    public Guid SaleId { get; private set; }
+    public Guid SaleId { get; set; }
 
     /// <summary>
     /// ProductId
     /// </summary>
-    public Guid ProductId { get; private set; }
-
-    /// <summary>
-    /// Product    
-    /// </summary>
-    public GetProductResponse Product { get; private set; } = new();
-
+    public Guid ProductId { get; set; }
+    
     /// <summary>
     /// Quantity    
     /// </summary>
-    public int Quantity { get; private set; }
+    public int Quantity { get; set; }
 
     /// <summary>
     /// UnitPrice    
@@ -40,15 +35,20 @@ public class GetSaleItemResponse
     /// <summary>
     /// Discount    
     /// </summary>
-    public decimal Discount { get; private set; }
+    public decimal Discount { get; set; }
 
     /// <summary>
     /// TotalAmount    
     /// </summary>
-    public decimal TotalAmount { get; private set; }
+    public decimal TotalAmount { get; set; }
 
     /// <summary>
     /// IsCancelled    
     /// </summary>
-    public bool IsCancelled { get; private set; } = false;
+    public bool IsCancelled { get; set; } = false;
+
+    /// <summary>
+    /// Product    
+    /// </summary>
+    public GetProductResponse Product { get; set; } = new();
 }
