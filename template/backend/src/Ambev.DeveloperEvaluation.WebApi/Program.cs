@@ -12,7 +12,7 @@ using Serilog;
 
 namespace Ambev.DeveloperEvaluation.WebApi;
 
-public class Program
+public partial class Program
 {
     public static void Main(string[] args)
     {
@@ -59,6 +59,11 @@ public class Program
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
+                
+                // Create database only if Development Environment
+                using var scope = app.Services.CreateScope();
+                var db = scope.ServiceProvider.GetService<DefaultContext>();
+                db?.Database.MigrateAsync();
             }
 
             app.UseHttpsRedirection();
